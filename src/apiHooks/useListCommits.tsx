@@ -1,17 +1,21 @@
 import * as React from "react";
-import type { Repository } from "../types/gitHubTypes";
+import type { Commit } from "../types/gitHubTypes";
 interface UseFetchReposProps {
   owner: string | undefined;
   repo: string | undefined;
+  branch: string;
+  page?: number;
 }
 
 export const perPage: number = 10;
 
-export const useGetRepository = ({
+export const useListCommits = ({
   owner,
   repo,
+  branch,
+  page = 1,
 }: UseFetchReposProps) => {
-  const [repository, setRepository] = React.useState<Repository>();
+  const [commits, setCommits] = React.useState<Commit[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -21,24 +25,30 @@ export const useGetRepository = ({
     const fetchCommits = async () => {
       setLoading(true);
       setError(null);
-      setRepository(undefined);
+      setCommits([]);
+
+      if (!branch || !owner || !repo) return;
 
       try {
+        const headers: Record<string, string> = {};
+
+        if (import.meta.env.VITE_GITHUB_TOKEN) {
+          headers.Authorization = `token ${import.meta.env.VITE_GITHUB_TOKEN}`;
+        }
+
         const response = await fetch(
-          `https://api.github.com/repos/${owner}/${repo}`, {
-            headers: {
-              Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`,
-            }
+          `https://api.github.com/repos/${owner}/${repo}/commits?sha=${branch}&per_page=${perPage}&page=${page}`, {
+            headers
           }
         );
 
+        const data = await response.json();
         if (!response.ok) {
-          throw new Error(`Error fetching repos: ${response.statusText}`);
+          throw new Error(data.message || `Error fetching repos: ${response.statusText}`);
         }
 
-        const data = await response.json();
         if (!isCancelled) {
-          setRepository(data);
+          setCommits(data);
         }
       } catch (err: any) {
         setError(err.message || "Unknown error");
@@ -52,8 +62,8 @@ export const useGetRepository = ({
       isCancelled = true;
     };
 
-  }, [owner, repo]);
-  
-  return { repository, loading, error };
+  }, [owner, repo, branch, page]);
+
+  return { commits, loading, error };
 
 }

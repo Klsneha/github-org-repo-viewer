@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useListRepositories } from "../hooks/useListRepositories";
+import { useListRepositories } from "../apiHooks/useListRepositories";
 import type { Repository } from "../types/gitHubTypes";
 import { Link } from "react-router-dom";
 import type { RepoListComparator, SortConfig } from "./GitHubRepoList";
@@ -39,40 +39,37 @@ export const GitHubRepoListingData: React.FC<GitHubRepoListingDataProps> = ({
   return (
     <>
       { error ? (
-        <td colSpan={5} style={{ textAlign: "center", padding: "1rem" }}>
+        <td colSpan={5} className="error">
           {error}
         </td>  
       ) : loading ? (
           <tr>
-            <td colSpan={5} style={{ textAlign: "center", padding: "1rem" }}>
+            <td colSpan={5} className="text-msg">
               Loading repositories...
             </td>
           </tr>
         ) : sortedRepos?.length === 0 ? (
           <tr>
-            <td colSpan={5} style={{ textAlign: "center", padding: "1rem" }}>
+            <td colSpan={5} className="text-msg">
               No repositories found.
             </td>
           </tr>
         ) : (sortedRepos?.map((repo: Repository) => (
           <tr key={repo.id}>
-            <td style={tdStyle}>
-              <Link to={`/${repo.owner.login}/${repo.name}`} style={{ color: "#007bff", textDecoration: "none" }}>
+            <td className="table-row">
+              <Link 
+                to={`/${repo.owner.login}/${repo.name}`}
+                className="link"
+              >
                 {repo.name}
               </Link>
             </td>
-            <td style={tdStyle}>{repo.owner.login}</td>
-            <td style={tdStyle}>{repo.stargazers_count}</td>
-            <td style={tdStyle}>{repo.forks_count}</td>
-            <td style={tdStyle}>{formatDate(repo.updated_at)}</td>
-            <td style={tdStyle}>{formatDate(repo.created_at)}</td>
+            <td className="table-row">{repo.stargazers_count}</td>
+            <td className="table-row">{repo.forks_count}</td>
+            <td className="table-row">{formatDate(repo.updated_at)}</td>
+            <td className="table-row">{formatDate(repo.created_at)}</td>
           </tr>
         )))}
     </>
   );
 }
-
-const tdStyle: React.CSSProperties = {
-  borderBottom: "1px solid #ddd",
-  padding: "8px",
-};

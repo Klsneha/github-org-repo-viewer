@@ -9,27 +9,25 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, query } : Search
   const [search, setSearch] = React.useState<string>(query ?? "");
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // prevent page reload
+    e.preventDefault();
     if (search.trim() !== "") {
      onSearch(search.trim());
     }
   };
 
-  console.log("search", search);
-
   return (
     <form
       onSubmit={handleSubmit}
-      style={{ display: "flex", gap: "8px", marginBottom: "16px" }}
+      className="search-container"
     >
       <input
         type="text"
         placeholder="Enter GitHub Organization name"
         value={search}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-        style={{ flex: 1, padding: "8px" }}
+        className="search-input"
       />
-      <button type="submit" style={{ padding: "8px 16px" }}>
+      <button type="submit" className="button">
         Search
       </button>
     </form>

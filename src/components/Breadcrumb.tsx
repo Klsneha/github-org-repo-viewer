@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export interface BreadcrumbItem {
   label: string;
-  path?: string; // optional if last item (current page)
+  path: string;
 }
 
 interface BreadcrumbProps {
@@ -12,29 +12,16 @@ interface BreadcrumbProps {
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   return (
-    <nav style={{ marginBottom: "1rem" }}>
-      <ol
-        style={{
-          listStyle: "none",
-          display: "flex",
-          gap: "0.5rem",
-          padding: 0,
-        }}
-      >
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1;
-          return (
-            <li key={index} style={{ display: "flex", alignItems: "center" }}>
-              {item.path && !isLast ? (
-                <Link to={item.path}>{item.label}</Link>
-              ) : (
-                <span>{item.label}</span>
-              )}
-              {!isLast && <span style={{ margin: "0 0.25rem" }}>/</span>}
-            </li>
-          );
-        })}
-      </ol>
+    <nav className="breadcrumb-container">
+      {items.map((item, index) => {
+        const isLast = index === items.length - 1;
+        return (
+          <div key={index}>
+            <Link className="breadcrumb-link" to={item.path!}>{item.label}</Link>
+            {!isLast && <span className="breadcrumb-slash" >/</span>}
+          </div>
+        );
+      })}
     </nav>
   );
 };

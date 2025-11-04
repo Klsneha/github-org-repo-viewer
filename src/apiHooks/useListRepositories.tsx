@@ -1,9 +1,9 @@
 import * as React from "react";
 import type { Repository } from "../types/gitHubTypes";
+import { SortDirectionEnum } from "../components/GitHubRepoList";
 interface UseFetchReposProps {
   orgName: string;
   page?: number;
-  // sort?: "stars" | "forks" | "updated";
 }
 
 export const perPage: number = 10;
@@ -24,12 +24,16 @@ export const useListRepositories = ({
       setError(null);
       setRepos([]);
 
+      if (!orgName) return;
+
       try {
+        const headers: Record<string, string> = {};
+        if (!!import.meta.env.VITE_GITHUB_TOKEN) {
+          headers.Authorization = `token ${import.meta.env.VITE_GITHUB_TOKEN}`;
+        }
         const response = await fetch(
-          `https://api.github.com/orgs/${orgName}/repos?per_page=${perPage}&page=${page}`,{
-            headers: {
-              Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`,
-            },
+          `https://api.github.com/orgs/${orgName}/repos?per_page=${perPage}&page=${page}&sort=updated&direction=${SortDirectionEnum.DESC}`, {
+            headers
           }
         );
         const data = await response.json();

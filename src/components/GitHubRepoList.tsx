@@ -7,13 +7,12 @@ interface GitHubRepoListProps{
 }
 
 export const Columns = {
-  name: "Name",
-  owner: "Owner",
+  name: "Repository",
   stars: "Stars",
   forks: "Fork Count",
   updatedDate: "Updated At",
   createdDate: "Created At"
-} as const;
+};
 
 // extract the value type
 export type ColumnKey = typeof Columns[keyof typeof Columns];
@@ -22,8 +21,6 @@ export enum SortDirectionEnum {
   ASC = "asc",
   DESC = "desc"
 }
-
-// export type SortDirection = SortDirectionEnum.ASC | SortDirectionEnum.DESC;
 
 export interface SortConfig {
   key: ColumnKey;
@@ -36,7 +33,7 @@ export type RepoListComparator = {
 
 export const GitHubRepoList: React.FC<GitHubRepoListProps> = ({ orgName }: GitHubRepoListProps) => {
 
-  const defaultSortconfig: SortConfig = {key: Columns.name, direction: SortDirectionEnum.ASC};
+  const defaultSortconfig: SortConfig = {key: Columns.updatedDate, direction: SortDirectionEnum.DESC};
 
   const [page, setPage] = React.useState(1);
   const [repositories, setRepositories] = React.useState<Repository[]>();
@@ -45,7 +42,6 @@ export const GitHubRepoList: React.FC<GitHubRepoListProps> = ({ orgName }: GitHu
   const onSort = (key: ColumnKey) => {
     setSortConfig((prev) => {
       if (prev?.key === key) {
-        // toggle direction
         return { 
           key,
           direction: prev.direction === SortDirectionEnum.ASC ?
@@ -64,8 +60,6 @@ export const GitHubRepoList: React.FC<GitHubRepoListProps> = ({ orgName }: GitHu
     const comparator = {
       [Columns.name]: (repoA: Repository,repoB: Repository, direction: SortDirectionEnum) =>
         compareStrings(repoA.name, repoB.name, direction),
-      [Columns.owner]: (repoA: Repository,repoB: Repository, direction: SortDirectionEnum) => 
-        compareStrings(repoA.owner.login, repoB.owner.login, direction),
       [Columns.stars]: (repoA: Repository,repoB: Repository, direction: SortDirectionEnum) => 
         compareNumbers(repoA.stargazers_count, repoB.stargazers_count, direction),
       [Columns.forks]: (repoA: Repository,repoB: Repository, direction: SortDirectionEnum) => 
@@ -97,7 +91,7 @@ export const GitHubRepoList: React.FC<GitHubRepoListProps> = ({ orgName }: GitHu
               <th
                 key={key}
                 onClick={() => onSort(value)}
-                style={thStyle}
+                className="table-heading"
               >
                 {value}
                 {isSorted && (direction === SortDirectionEnum.ASC ? " ▲" : " ▼")}
@@ -112,8 +106,8 @@ export const GitHubRepoList: React.FC<GitHubRepoListProps> = ({ orgName }: GitHu
   return (
     <>
       {!!orgName ?
-        <div style={{ marginTop: "1.5rem" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <div className="table-container">
+          <table className="table">
             {getTableHeaders()}
             <tbody>
               {
@@ -127,17 +121,20 @@ export const GitHubRepoList: React.FC<GitHubRepoListProps> = ({ orgName }: GitHu
               }
             </tbody>
           </table>
-          <div style={{ marginTop: "1rem" }}>
+          <div className="table-pagination">
             <button 
               onClick={() => setPage((p) => Math.max(1, p-1))}
               disabled={page === 1}
+              className="button"
             >
               Previous
             </button>
-            <span style={{ margin: "0 1rem" }}>Page {page}</span>
+            <span>Page {page}</span>
             <button 
               onClick={() => setPage((p) => p+1)}
-              disabled={(repositories ?? [])?.length < 10}>
+              disabled={(repositories ?? [])?.length < 10}
+              className="button"
+            >
               Next
             </button>
           </div>
@@ -146,11 +143,3 @@ export const GitHubRepoList: React.FC<GitHubRepoListProps> = ({ orgName }: GitHu
     </>
   );
 }
-
-const thStyle: React.CSSProperties = {
-  borderBottom: "2px solid #ccc",
-  padding: "8px",
-  textAlign: "left",
-  backgroundColor: "#f7f7f7",
-  cursor: "pointer"
-};

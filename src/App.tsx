@@ -1,7 +1,6 @@
-import './App.css'
 import { Route, Routes } from 'react-router-dom';
-import { GitHubRepoListPage } from './pages/GitHubRepoListingPage';
-import { GitHubRepoDetailsPage } from './pages/GitHubRepoDetailsPage';
+import { GitHubRepoListPage } from './pages/RepositoriesListingPage';
+import { GitHubRepoDetailsPage } from './pages/RepositoryDetailsPage';
 
 function App() {
 

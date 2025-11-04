@@ -23,12 +23,17 @@ export const useListRepositoryBranches = ({
       setError(null);
       setBranches([]);
 
+      if (!owner || !repo || branches?.length > 0) return;
+
       try {
+        const headers: Record<string, string> = {};
+
+        if (import.meta.env.VITE_GITHUB_TOKEN) {
+          headers.Authorization = `token ${import.meta.env.VITE_GITHUB_TOKEN}`;
+        }
         const response = await fetch(
           `https://api.github.com/repos/${owner}/${repo}/branches`, {
-            headers: {
-              Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`,
-            }
+            headers
           }
         );
 
@@ -38,7 +43,7 @@ export const useListRepositoryBranches = ({
         }
 
         if (!isCancelled) {
-          setBranches(data);
+          setBranches(data); 
         }
       } catch (err: any) {
         setError(err.message || "Unknown error");

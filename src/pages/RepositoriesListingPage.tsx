@@ -22,7 +22,7 @@ export const GitHubRepoListPage: React.FC = () => {
   return (
     <>
       <Breadcrumb items={breadcrumb} />
-      <h1>GitHub Organization Repositories </h1>
+      <h1 className="page-title">GitHub Organization Repositories </h1>
       <SearchBar query={orgName} onSearch={onOrgSearch} />
       <GitHubRepoList 
         orgName={orgName}
