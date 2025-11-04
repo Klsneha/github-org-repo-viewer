@@ -4,9 +4,10 @@ import { useGetRepository } from "../apiHooks/useGetRepository";
 import { Breadcrumb, type BreadcrumbItem } from "../components/Breadcrumb";
 import { GitHubRepoMetaData } from "../components/GitHubRepoMetaData";
 import { CommitsListingTable } from "../components/CommitsListingData";
-export const GitHubRepoDetailsPage: React.FC = () => {
-  const { owner, repoName: repo } = useParams();
 
+export const GitHubRepoDetailsPage: React.FC = () => {
+  
+  const { owner, repoName: repo } = useParams();
   const {repository, loading, error } = useGetRepository({ owner, repo });
 
   const breadcrumb: BreadcrumbItem[] = [

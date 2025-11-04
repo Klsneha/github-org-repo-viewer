@@ -5,7 +5,7 @@
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px; /* 1rem = 16px */
+  font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
@@ -87,7 +87,7 @@ body {
 }
 
 .search-input {
-  flex: 1;                 /* take full remaining width */
+  flex: 1;
   padding: 0.5rem 1rem;
   font-size: 1rem;
 }

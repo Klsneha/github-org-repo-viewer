@@ -14,7 +14,6 @@ export const Columns = {
   createdDate: "Created At"
 };
 
-// extract the value type
 export type ColumnKey = typeof Columns[keyof typeof Columns];
 
 export enum SortDirectionEnum {
@@ -52,11 +51,12 @@ export const GitHubRepoList: React.FC<GitHubRepoListProps> = ({ orgName }: GitHu
   };
 
   React.useEffect(() => {
-    setPage(1);
+    if (page !== 1) {
+      setPage(1);
+    } 
   }, [orgName]);
 
   const customComparator = React.useCallback((): RepoListComparator => {
-
     const comparator = {
       [Columns.name]: (repoA: Repository,repoB: Repository, direction: SortDirectionEnum) =>
         compareStrings(repoA.name, repoB.name, direction),

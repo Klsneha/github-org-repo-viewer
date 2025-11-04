@@ -2,9 +2,9 @@
 
 ## Description
 A React + TypeScript web app that allows users to:
-- View List of Organization public repositories. 
+- View List of Organization's public repositories. 
 - View all repositories with pagination, sort them by stars, forks and recent updates. 
-- Select a repository to see its recent commits. 
+- Select a repository to see it's recent commits. 
 
 
 ## Setup
@@ -18,25 +18,25 @@ You can check your versions using:
 `node -v`  
 `npm -v`
 
-***Install required packaged***  
+***Install required packages***  
 `npm install`
 
-***Run in Development mode***  
-`npm run dev`
-
-***Build the project ***  
+***Build the project***  
 `npm run build`
 - Minified React app will be created in the dist/ folder, for production deployment.
 
-***Run in Preview Mode***
+***Run in Preview Mode***  
 `npm run preview`
 - Opens a local preview of the production bundle.
 - Open the local URL printed in the terminal (usually http://localhost:4173/).
 
+***Run in Development mode (optional)***  
+`npm run dev`
+
 ## GitHub API Token (optional)
 - The app can run without a token but may hit rate limits(60 per hour).
-- For extended use, create a GitHub personal access token and add it to .env file
-- Steps to create a perosnla access token: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token
+- For extended use, create a GitHub personal access token and add it to .env file.
+- Steps to create a personal access token: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token
 - Create a .env file in the project root and add below line  
 `VITE_GITHUB_TOKEN=your_personal_access_token`
 
@@ -45,7 +45,7 @@ You can check your versions using:
 ### Architecture
 - Built with React (component-based UI) for modular and reusable code.
 - Organized Code as
-  - `src/pages` -> Main route level containers (Listing, details Page)
+  - `src/pages` -> Main route level containers (Listing, details Pages)
   - `src/apiHooks` -> Custom hooks to fetch the GitHub data. 
   - `src/components ` -> Reusable child components within the pages.
   - `src/type` -> TypeScript interfaces for consistent and type-safe data handling.
@@ -92,5 +92,5 @@ You can check your versions using:
 - Reusable Table component: Develop a generic table component that accepts columns, data, and a custom comparator for sorting, making it reusable for other lists.
 - Reusable Pagination Component: Extract pagination logic (Next/Previous buttons, page state) into a shared component for consistent usage across pages.
 - Dedicated Loading Component: Create a simple reusable spinner or loading indicator component for uniform loading states throughout the app.
-- Centralized Error Component: Build a standard error display component that handles API errors gracefully with retry options.
+- Centralized Error Component: Build a standard error display component that handles API errors gracefully.
 - Responsive design: Enhanced layout suitable for desktop and tablet views.

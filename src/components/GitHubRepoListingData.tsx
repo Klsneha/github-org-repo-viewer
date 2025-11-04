@@ -39,9 +39,11 @@ export const GitHubRepoListingData: React.FC<GitHubRepoListingDataProps> = ({
   return (
     <>
       { error ? (
-        <td colSpan={5} className="error">
-          {error}
-        </td>  
+        <tr>
+          <td colSpan={5} className="error">
+            {error}
+          </td>
+        </tr>
       ) : loading ? (
           <tr>
             <td colSpan={5} className="text-msg">

@@ -38,6 +38,28 @@ export const CommitsListingTable: React.FC<CommitsListingTabelProps> = ({ owner,
     }
   }, [selectedBranch]);
 
+  const getPagination = (): React.JSX.Element => {
+    return (
+      <div className="table-pagination">
+        <button 
+          onClick={() => setPage((p) => Math.max(1, p-1))}
+          disabled={page === 1}
+          className="button"
+        >
+          Previous
+        </button>
+        <span>Page {page}</span>
+        <button 
+          onClick={() => setPage((p) => p+1)}
+          disabled={(commits ?? [])?.length < 10}
+          className="button"
+        >
+          Next
+        </button>
+      </div> 
+    );
+  };
+
   return (
     <>
       <div className="branch-container">
@@ -69,26 +91,15 @@ export const CommitsListingTable: React.FC<CommitsListingTabelProps> = ({ owner,
           <div className="text-msg">Loading...</div> 
         : commitError ? 
           <div className="error">Commits Error: {commitError}</div> 
+        : commits.length === 0 ? 
+          <>
+            <div className="text-msg"> No commits found.</div> 
+            {getPagination()}
+          </>
         :
           <>
             {commits.map((commit) => <CommitCard key={commit.sha}commit={commit} />)}
-            <div className="table-pagination">
-              <button 
-                onClick={() => setPage((p) => Math.max(1, p-1))}
-                disabled={page === 1}
-                className="button"
-              >
-                Previous
-              </button>
-              <span>Page {page}</span>
-              <button 
-                onClick={() => setPage((p) => p+1)}
-                disabled={(commits ?? [])?.length < 10}
-                className="button"
-              >
-                Next
-              </button>
-            </div> 
+            {getPagination()}
           </>
         }
       </div>

@@ -1,7 +1,7 @@
 import { SortDirectionEnum } from "./components/GitHubRepoList";
 
 export const compareDates = (dateA: Date, dateB: Date, direction: SortDirectionEnum): number => {
-  if (direction === "asc") {
+  if (direction === SortDirectionEnum.ASC) {
     if (dateA < dateB) {
       return -1;
     } else if (dateA > dateB) {
